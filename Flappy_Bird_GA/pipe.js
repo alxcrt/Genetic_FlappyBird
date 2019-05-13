@@ -1,26 +1,24 @@
 class Pipe {
-
   constructor() {
-
     // How big is the empty space
-      let spacing = 50;
-      // Where is th center of the empty space
-      let centery = random(spacing, height - spacing);
+    let spacing = 100;
+    // Where is th center of the empty space
+    let centery = random(spacing, height - spacing);
 
-      // Top and bottom of pipe
-      this.top = centery - spacing / 2;
-      this.bottom = height - (centery + spacing / 2);
-      // Starts at the edge
-      this.x = width;
-      // Width of pipe
-      this.w = 60;
-      // How fast
-      this.speed = 6;
+    // Top and bottom of pipe
+    this.top = centery - spacing / 2;
+    this.bottom = height - (centery + spacing / 2);
+    // Starts at the edge
+    this.x = width;
+    // Width of pipe
+    this.w = 60;
+    // How fast
+    this.speed = 6;
   }
 
   // Did this pipe hit a bird?
   hits(bird) {
-    if ((bird.y - bird.r) < this.top || (bird.y + bird.r) > (height - this.bottom)) {
+    if (bird.y - bird.r < this.top || bird.y + bird.r > height - this.bottom) {
       if (bird.x > this.x && bird.x < this.x + this.w) {
         return true;
       }
