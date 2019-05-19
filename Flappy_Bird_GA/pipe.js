@@ -1,25 +1,35 @@
 class Pipe {
   constructor() {
+    // Crate newHeight because swe whant to add the ground
+    this.newHeight = height - groundImg.height;
+
+    this.pipeImg = pipeImg;
+    this.pipeImgR = pipeImgR;
     // How big is the empty space
     let spacing = 100;
     // Where is th center of the empty space
-    let centery = random(spacing, height - spacing);
+    let centery = random(spacing, this.newHeight - spacing);
 
     // Top and bottom of pipe
     this.top = centery - spacing / 2;
-    this.bottom = height - (centery + spacing / 2);
+    this.bottom = this.newHeight - (centery + spacing / 2);
     // Starts at the edge
     this.x = width;
     // Width of pipe
-    this.w = 60;
+    this.w = pipeImg.width;
     // How fast
-    this.speed = 6;
+    this.speed = 5;
   }
 
   // Did this pipe hit a bird?
   hits(bird) {
-    if (bird.y - bird.r < this.top || bird.y + bird.r > height - this.bottom) {
-      if (bird.x > this.x && bird.x < this.x + this.w) {
+    let BirdHeight = bird.birdImg.height;
+    let BirdWidth = bird.birdImg.width;
+    if (
+      bird.y - BirdHeight < this.top ||
+      bird.y + BirdHeight > this.newHeight - this.bottom
+    ) {
+      if (bird.x + BirdWidth > this.x && bird.x + BirdWidth < this.x + this.w) {
         return true;
       }
     }
@@ -28,10 +38,14 @@ class Pipe {
 
   // Draw the pipe
   show() {
-    stroke(255);
-    fill(255);
-    rect(this.x, 0, this.w, this.top);
-    rect(this.x, height - this.bottom, this.w, this.bottom);
+    image(this.pipeImgR, this.x, 0, this.w, this.top);
+    image(
+      this.pipeImg,
+      this.x,
+      this.newHeight - this.bottom,
+      this.w,
+      this.bottom
+    );
   }
 
   // Update the pipe

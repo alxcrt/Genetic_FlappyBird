@@ -1,9 +1,10 @@
-class Bird{
-
+class Bird {
   constructor(brain) {
-    this.y = height / 2;
+    // Crate newHeight because swe whant to add the ground
+    this.newHeight = height - groundImg.height;
+
+    this.y = this.newHeight / 2;
     this.x = 64;
-    this.r = 12;
 
     this.gravity = 0.8;
     this.lift = -10;
@@ -11,78 +12,73 @@ class Bird{
 
     this.score = 0;
     this.fitness = 0;
-    if(brain){
+
+    this.angle = 0;
+    this.birdImg = birdImg;
+    if (brain) {
       this.brain = brain.copy();
-    }else{
+    } else {
       this.brain = new NeuronalNetwork(5, 10, 2);
+    }
   }
 
+  show() {
+    push();
+    translate(this.x, this.y);
+    rotate(this.angle);
+    image(this.birdImg, 0, 0, this.birdImg.width, this.birdImg.height);
+    pop();
   }
 
-  show(){
-    stroke(255);
-    fill(255,100);
-    ellipse(this.x, this.y, this.r * 2, this.r * 2);
-  }
-
-  think(pipes){
-
+  think(pipes) {
     //Find closest pipe
     let closest = null;
     let record = Infinity;
     for (let i = 0; i < pipes.length; i++) {
-      let diff = (pipes[i].x + pipes[i].w) - this.x;
+      let diff = pipes[i].x + pipes[i].w - this.x;
       if (diff < record && diff > 0) {
         record = diff;
         closest = pipes[i];
       }
     }
     //console.log(closest.top);
-    if(closest != null){
+    if (closest != null) {
       let input = [];
-      input[0] = this.y / height;
-      input[1] = closest.top / height ;
-      input[2] = closest.bottom / height;
+      input[0] = this.y / this.newHeight;
+      input[1] = closest.top / this.newHeight;
+      input[2] = closest.bottom / this.newHeight;
       input[3] = closest.x / width;
-      input[4] = this.velocity / 10 ;
+      input[4] = this.velocity / 10;
 
       let output = this.brain.predict(input);
       //console.log(output);
-      if(output[0] > output[1]){
+      if (output[0] > output[1]) {
         this.up();
-
       }
     }
   }
 
-  offscreen(){
-    return (this.y > height || this.y < 0)
+  offscreen() {
+    return this.y > this.newHeight || this.y < 0;
   }
 
-  update(){
-    this.score+= 10;
+  update() {
+    this.score += 1;
 
     this.velocity += this.gravity;
+
+    if (this.velocity < -10) this.velocity = -10; //limit upward vel
+    if (this.velocity > 20) this.velocity = 20; //limit downward vel
     this.y += this.velocity;
 
-    // if (this.y > height){
-    //   this.y = height;
-    //
-    //   this.velocity = 0;
-    // }else if (this.y < 0) {
-    //   this.y = 0;
-    //   this.velocity = 0;
-    // }
+    this.angle = map(this.velocity, -10, 20, -PI / 6, PI / 6); //set angle based on upward / downward velocity
   }
 
-  up(){
+  up() {
     this.velocity += this.lift;
   }
 
-  mutate(){
+  mutate() {
     this.brain.mutate(0.1);
-
   }
-
-
 }

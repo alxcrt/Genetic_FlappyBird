@@ -1,5 +1,4 @@
 class Matrix {
-
   constructor(rows, cols) {
     this.rows = rows;
     this.cols = cols;
@@ -14,7 +13,6 @@ class Matrix {
   }
 
   add(n) {
-
     if (n instanceof Matrix) {
       for (let i = 0; i < this.rows; i++) {
         for (let j = 0; j < this.cols; j++) {
@@ -48,7 +46,6 @@ class Matrix {
       }
       return sub;
     }
-
   }
 
   randomize(n) {
@@ -57,7 +54,7 @@ class Matrix {
         this.data[i][j] += Math.random() * 2 - 1;
       }
     }
-  };
+  }
 
   multiply(n) {
     if (n instanceof Matrix) {
@@ -73,7 +70,7 @@ class Matrix {
         }
       }
     }
-  };
+  }
 
   static dot(a, b) {
     if (a.cols !== b.rows) {
@@ -82,7 +79,6 @@ class Matrix {
       let result = new Matrix(a.rows, b.cols);
       for (let i = 0; i < result.rows; i++) {
         for (let j = 0; j < result.cols; j++) {
-
           let sum = 0;
           for (let k = 0; k < a.cols; k++) {
             sum += a.data[i][k] * b.data[k][j];
@@ -101,7 +97,7 @@ class Matrix {
         k.data[j][i] = m.data[i][j];
       }
     }
-    return k
+    return k;
   }
 
   print() {
@@ -138,7 +134,7 @@ class Matrix {
     let a = new Matrix(x.rows, x.cols);
     for (let i = 0; i < a.rows; i++) {
       for (let j = 0; j < a.cols; j++) {
-        a.data[i][j] = func(x.data[i][j], i , j);
+        a.data[i][j] = func(x.data[i][j], i, j);
       }
     }
     return a;
@@ -153,5 +149,4 @@ class Matrix {
     }
     return m;
   }
-
 }
